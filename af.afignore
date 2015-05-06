@@ -1,0 +1,11 @@
+# ignore svn
+.svn/
+# ignore ws
+.idea/
+# ignore .
+.*
+# ignore log
+#.log
+# ignore readme
+README.txt
+

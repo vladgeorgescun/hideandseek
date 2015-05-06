@@ -1,0 +1,471 @@
+html, body {
+    /*
+	background: -webkit-gradient(linear, center bottom, center top, from(#6E6E6E), to(#FFFFFF));
+	background:    -moz-linear-gradient(center bottom, #6E6E6E, #FFFFFF);
+	background:     -ms-linear-gradient(top, #00abeb 100%, #6E6E6E 0%);
+	background:      -o-linear-gradient(center bottom, #00abeb 100%, #fff 0%);
+	background:         linear-gradient(center bottom, #6E6E6E 0%, #FFFFFF 100%);*/
+    background: #CECECE;
+	color: #000000;
+	margin: 0px;
+	font-family: Verdana,Arial,Geneva,sans-serif;
+	font-size: 13px;
+	line-height: 18px;
+}
+
+a {
+	color: #558ED5;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #000000;
+	text-decoration: none;
+}
+
+a.helpgrey {
+	color: #7F7F7F;
+	font-size:10px;
+}
+
+a.underlinegrey {
+	color: #7F7F7F;
+	text-decoration: underline;
+	font-size:13px;
+}
+
+a img {
+	border: none;
+}
+
+ul {
+	margin:0px;
+	padding:3px 0px 3px 20px;
+}
+
+p{
+	//text-align:justify;
+}
+
+h1 {
+	font-size: 24px;
+	font-weight: bold;
+	color: #000000;
+}
+
+h2 {
+	font-size: 16px;
+	font-weight: bold;
+	color: #000000;
+}
+
+h3 {
+	margin: 0px;
+	font-size: 15px;
+	font-weight: bold;
+	color: #000000;
+}
+
+h3.team {
+    width: 20%;
+    text-align: left;
+    padding: 10px;
+    color: #0066bb;
+    cursor: url(/res/cursors/cursor_point_over.png), default;
+}
+
+hr {
+	border: none 0;
+	border-top: 1px solid #D9D9D9;
+	height: 1px;
+}
+
+.shadow {
+    -moz-box-shadow: 0 0 30px 5px #999;
+    -webkit-box-shadow: 0 0 30px 5px #999;
+}
+
+div.message {
+	background-color:#DE0000;
+	bottom: 0px;
+	color:#FFFFFF;
+	font-size:100%;
+	font-weight:bold;
+	height:15px;
+	left:0px;
+	padding:10px 0px 10px 0px;
+	position:fixed;
+	opacity:0.9;
+	text-align:center;
+	width:100%;
+	z-index:100;
+}
+
+.close-notify {
+	white-space: nowrap;
+	top: 0px;
+	font-size:1.1em;
+	float:right;
+	margin-right:10px;
+	margin-top: -2px;
+	color:#FFFFFF;
+	text-decoration:none;
+	border:2px #FFFFFF solid;
+	padding-left: 6px;
+	padding-right: 6px;
+}
+
+#game_wrapper {
+    /* disable text selection */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor:default;
+
+    position: relative;
+    min-width: 900px;
+    max-width: 900px;
+    min-height: 540px;
+    max-height: 540px;
+    margin: 30px auto 0px;
+    padding: 10px;
+    border: none 1px #FFFFFF;
+}
+
+canvas.game_canvas {
+    width : 640px;
+    height : 480px;
+    left:0; top:0;
+    position: absolute;
+}
+
+#game_pick {
+    /* shadow */
+    -moz-box-shadow: 0 0 15px 5px #999;
+    -webkit-box-shadow: 0 0 15px 5px #999;
+
+    float: left;
+    width: 640px;
+    height: 480px;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+    z-index: 1;
+    background-color: #8E8E8E;
+    cursor: url(/res/cursors/cursor_point.png), default;
+}
+
+#game_lobby {
+    /* shadow */
+    -moz-box-shadow: 0 0 15px 5px #999;
+    -webkit-box-shadow: 0 0 15px 5px #999;
+
+    float: left;
+    width: 640px;
+    height: 480px;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #8E8E8E;
+    cursor: url(/res/cursors/cursor_point.png), default;
+}
+
+#game_scores {
+    /* shadow */
+    -moz-box-shadow: 0 0 15px 5px #999;
+    -webkit-box-shadow: 0 0 15px 5px #999;
+
+    float: left;
+    width: 640px;
+    height: 480px;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #8E8E8E;
+    cursor: url(/res/cursors/cursor_point.png), default;
+}
+
+#game_board {
+    /* shadow */
+    -moz-box-shadow: 0 0 15px 5px #999;
+    -webkit-box-shadow: 0 0 15px 5px #999;
+
+    float: left;
+    max-width: 640px;
+    position: relative;
+    background-color: #6E6E6E;
+    cursor: url(/res/cursors/cursor_point.png), default;
+}
+
+#game_chat {
+    float: left;
+    width: 640px;
+    max-width: 640px;
+    position: relative;
+    background-color: #5A5A5A;
+    }
+
+#game_info {
+    /* shadow */
+    -moz-box-shadow: 0 0 15px 5px #999;
+    -webkit-box-shadow: 0 0 15px 5px #999;
+
+    float:right;
+    padding: 10px;
+    background-color: #848484;
+    width: 200px;
+    position: relative;
+}
+
+text.game_state_red {
+    padding-left: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #FF0000;
+}
+
+text.game_state_green {
+    padding-left: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #00FF00;
+}
+
+text.game_info_big {
+    padding-left: 1px;
+    padding-top: 8px;
+    font-size: 20px;
+    font-weight: normal;
+    color: #000000;
+    position: relative;
+}
+
+text.game_info {
+    padding-left: 1px;
+    padding-top: 8px;
+    font-size: 16px;
+    font-weight: normal;
+    color: #000000;
+    position: relative;
+}
+
+textarea.lobbyChat {
+	text-align: left;
+	resize: none;
+	background-color: #363636;
+	border-color: #363636;
+	color: #FFFFFF;
+    width: 98%;
+}
+label.big {
+    font-size: 12px;
+    font-weight: normal;
+    color: #000000;
+    position: relative;
+}
+
+img.upper_bar {
+    padding-left: 10px;
+    width: 16px;
+    height: 16px;
+    position: relative;
+    cursor: pointer;
+}
+
+img.game_info {
+    padding-left: 10px;
+    width: 32px;
+    height: 32px;
+    position: relative;
+}
+
+img.normal {
+    padding-left: 2px;
+    width: 32px;
+    height: 32px;
+    position: relative;
+}
+
+img.boardAnimation {
+    position: absolute;
+    left: 192px;
+    top: 72px;
+    height: 256px;
+    width: 256px;
+    z-index: 99;
+}
+
+table.join_game {
+    text-align: center;
+    padding: 10px;
+    position: relative;
+}
+
+tr.join_game {
+    text-align: left;
+}
+
+td.join_game {
+    padding: 10px;
+    text-align: left;
+}
+
+td.game_lobby {
+    padding-left: 30px;
+    text-align: left;
+    min-width: 200px;
+}
+
+td.game_score {
+    padding-left: 10px;
+    text-align: left;
+    min-width: 120px;
+    width: 120px;
+    color: #FFFFFF;
+}
+
+td.game_lobby_info {
+    padding-left: 30px;
+    text-align: left;
+    min-width: 200px;
+    font-size: 11px;
+    color: #FFFFFF;
+}
+
+#header {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	height: 30px;
+	margin: 0px;
+	padding: 0px;
+	background:#4C4C4C;
+	color: #558ED5;
+	font-family: Verdana,Arial,Geneva,sans-serif;
+	font-size: 11px;
+}
+
+#spacer {
+	clear: both;
+}
+
+#footer {
+    position: relative;
+	height: 50px;
+	max-width: 960px;
+	z-index: 1;
+    margin: 0px auto 0px;
+    padding: 0px;
+}
+
+#footercontent {
+	font-size: 13px;
+	padding: 10px;
+	max-width: 960px;
+	margin: 0px auto 0px auto;
+}
+
+#footercontent a{
+	color: #A6A6A6;
+}
+
+#footercontent a:hover{
+	color: #7F7F7F;
+}
+
+#footercontent span.separator{
+	color: #D9D9D9;
+	padding: 10px;
+}
+
+.title {
+	color:#FFFFFF;
+	font-size: 22px;
+	letter-spacing: 0px;
+	line-height: 28px;
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+.subtitle {
+	font-size: 16px;
+	line-height: 22px;
+}
+
+div.content {
+	margin: 10px;
+}
+
+ul.none {
+	list-style-type:none;
+}
+
+ul.circlesmall {
+	font-size: 11px;
+	list-style-type:circle;
+}
+
+ul.disc {
+	list-style-type:disc;
+}
+
+ul.square {
+	list-style-type:square;
+}
+
+ul.circle {
+	list-style-type:circle;
+}
+
+.buttonBottomBig {
+    zoom: 1;
+    margin: 0 auto;
+    outline: none;
+    cursor: url(/res/cursors/cursor_point_over.png), default;
+    text-align: center;
+    text-decoration: none;
+    font-size: 32px;
+    line-height: 34px;
+    padding: .5em 0.5em .5em;
+    text-shadow: 0 1px 1px rgba(0,0,0,.3);
+    bottom: 0;
+    position: relative;
+}
+
+button.buttonBottomMedium {
+    zoom: 1;
+    margin: 0 auto;
+    outline: none;
+    cursor: url(/res/cursors/cursor_point_over.png), default;
+    text-align: center;
+    text-decoration: none;
+    font-size: 24px;
+    padding: .5em 0.5em .5em;
+    text-shadow: 0 1px 1px rgba(0,0,0,.3);
+    bottom: 0;
+}
+
+.button {
+	zoom: 1;
+	vertical-align: baseline;
+	margin: 0 2px;
+	outline: none;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+	font-size: 18px;
+	line-height: 28px;
+	padding: .5em 0.5em .5em;
+	text-shadow: 0 1px 1px rgba(0,0,0,.3);
+}
+.button:hover {
+	text-decoration: none;
+}
+.button:active {
+	position: relative;
+	top: 1px;
+}
