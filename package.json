@@ -1,0 +1,12 @@
+{
+  "name":"hideandseek",
+  "version":"0.0.1",
+  "dependencies":
+  {
+      "express":"",
+	  "http":"",
+	  "log4js":"",
+	  "node-uuid":"",
+	  "socket.io":""
+  }
+}

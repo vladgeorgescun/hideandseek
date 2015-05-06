@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
+      xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <title>Hide & Seek v0.2</title>
+    <!-- google analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-39525124-2']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+
+    <!-- Load style sheet -->
+	<link href="/css/style.css" rel="stylesheet" type="text/css" />
+    <!-- jquery -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <!-- Load socket.io client side contents. -->
+    <script src="/socket.io/socket.io.js"></script>
+	<!-- Date moment.js -->
+	<script type="text/javascript" src="/lib/moment.min.js"></script>
+    <!-- Load gettext client side contents. -->
+    <script type="text/javascript" src="/lib/Gettext.js"></script>
+    <!-- location of the lang file -->
+    <link rel="gettext" type="application/x-po" href="/lang/fr_FR/LC_MESSAGES/lang.po"/>
+    <!-- Load the GUI rendering library code. -->
+    <script type="text/javascript" src="lib/dat.gui.min.js"></script>
+    <!-- Load the keyboard specific code -->
+    <script type="text/javascript" src="lib/keyboard.js"></script>
+    <!-- Load the defines functions -->
+    <script type="text/javascript" src="defines.js"></script>
+    <!-- Load the utils functions -->
+    <script type="text/javascript" src="utils.js"></script>
+    <!-- Load the resources functions -->
+    <script type="text/javascript" src="resources.js"></script>
+    <!-- load the common part -->
+    <script type="text/javascript" src="common.js"></script>
+    <!-- Start the client -->
+    <script type="text/javascript" src="client.js"></script>
+    <!--script type="text/javascript" src="test.js"></script-->
+    <script>
+        var Lang = new Gettext({domain:"lang"});
+
+    </script>
+</head>
+
+<body>
+    <!--canvas id="canvas1" width="640" height="480" style="position:absolute; top: 0; left:0; z-index: 0;background-color: #FCEFA1"/>
+    <canvas id="canvas2" width="100" height="100" style="position:absolute; top: 0; left:0; z-index: 1;background-color: #00FF00"/-->
+
+    <div id="header">
+        <p style="font-size: 11px; text-align: right">
+            <img id="img_speaker" class="upper_bar" style="padding-right: 10px;" src="./res/icons/speaker_on.png" onmousedown="client.onSound()">
+            <script>document.write(Lang.gettext("Online players: "));</script><text style="padding-right: 10px;" id="text_onlinePlayers">0</text>
+            <script>document.write(Lang.gettext("Running games: "));</script><text style="padding-right: 10px;" id="text_runningGames"/>0</text>
+        </p>
+    </div>
+
+    <div id="game_wrapper">
+
+        <!-- game pick screen -->
+        <div id="game_pick">
+            <h1><script>document.write(Lang.gettext("Welcome to Hide & Seek"));</script></h1>
+            <table class="join_game">
+                <tr>
+                    <td class="join_game"><text class="game_info"><script>document.write(Lang.gettext("Enter your name"));</script></text></td>
+                    <td class="join_game">
+                        <input id="input_Name" style="cursor: url(/res/cursors/cursor_point_over.png), default;" type="text" value="Guest" maxlength="20"
+                               onmousedown="client.changeCursor(this, 'url(/res/cursors/cursor_point_select.png), default')" onmouseup="client.changeCursor(this, 'url(/res/cursors/cursor_point_over.png), default')"/>
+                        <text id="text_invalidName" class="game_state_red" style="display: none"><script>document.write(Lang.gettext("Your name can't be empty"));</script></text>
+                    </td>
+                </tr>
+            </table>
+            <p style="height: 260px;"></p>
+            <button id="but_JoinGame" class="buttonBottomBig"
+                    onmousedown="client.changeCursor(this, 'url(/res/cursors/cursor_point_select.png), default')" onmouseup="client.changeCursor(this, 'url(/res/cursors/cursor_point_over.png), default')"
+                    onclick="client.onButJoinGame()"><script>document.write(Lang.gettext("Play"));</script></button>
+        </div>
+
+		<div id="game_lobby" style="display: none;">
+			<h1><script>document.write(Lang.gettext("New game lobby"));</script></h1>
+            <h3 id="h3_teamHiders" class="team"
+                onmousedown="client.changeCursor(this, 'url(/res/cursors/cursor_point_select.png), default')" onmouseup="client.changeCursor(this, 'url(/res/cursors/cursor_point_over.png), default')"
+                onclick="client.onChangeTeam(0)"><script>document.write(Lang.gettext("Team hiders"));</script></h3>
+			<span id="span_lobbyHiders" style="text-align: left;"></span>
+			<h3 id="h3_teamSeekers" class="team"
+                onmousedown="client.changeCursor(this, 'url(/res/cursors/cursor_point_select.png), default')" onmouseup="client.changeCursor(this, 'url(/res/cursors/cursor_point_over.png), default')"
+                onclick="client.onChangeTeam(1)"><script>document.write(Lang.gettext("Team seekers"));</script></h3>
+			<span id="span_lobbySeekers" style="text-align: left"></span>
+            <p style="height: 14px;"></p>
+            <p><label id="label_StartGame" style="color: #FFFFFF; cursor: url(/res/cursors/cursor_point.png), default;"/><script>document.write(Lang.gettext("Press 'Ready' when you are ready to go!"));</script></p>
+			<button id="but_StartGame" class="buttonBottomMedium"
+                    onmousedown="client.changeCursor(this, 'url(/res/cursors/cursor_point_select.png), default')" onmouseup="client.changeCursor(this, 'url(/res/cursors/cursor_point_over.png), default')"
+                    onclick="client.onButReady()"><script>document.write(Lang.gettext("Ready"));</script></button>
+		</div>
+
+        <!-- game board -->
+        <div id="game_board" style="display: none;" onmousedown="client.onGameBoardMouseClick(event)">
+            <canvas id="game_canvas_background" width="640" height="400" style="position: relative;top: 0; left:0;  z-index: 0">
+            </canvas>
+            <canvas id="game_canvas_objects_fixed" width="640" height="400" style="position: absolute;top: 0; left:0;  z-index: 1">
+            </canvas>
+            <canvas id="game_canvas_objects_interactive" width="640" height="400" style="position: absolute;top: 0; left:0;  z-index: 2">
+            </canvas>
+            <canvas id="game_canvas_players" width="640" height="400" style="position:absolute; top: 0; left:0; z-index: 3;">
+            </canvas>
+
+            <img id="img_playerEvent" class="boardAnimation" src="./res/anims/anim_alpha.png">
+        </div>
+
+        <!-- game score at the end -->
+        <div id="game_scores" style="display: none;">
+            <h1><script>document.write(Lang.gettext("Game summary scores"));</script></h1>
+            <h3 style="width: 20%; text-align: left; padding-left: 10px; padding-top: 10px; color: #0066bb;"><script>document.write(Lang.gettext("Team hiders"));</script></h3>
+            <span id="span_scoreHiders" style="text-align: left;"></span>
+            <h3 style="width: 20%; text-align: left; padding-left: 10px; padding-top: 10px; color: #0066bb;"><script>document.write(Lang.gettext("Team seekers"));</script></h3>
+            <span id="span_scoreSeekers" style="text-align: left"></span>
+            <p style="height: 6px;"></p>
+            <button id="but_backToMain" class="buttonBottomBig"
+                    onmousedown="client.changeCursor(this, 'url(/res/cursors/cursor_point_select.png), default')" onmouseup="client.changeCursor(this, 'url(/res/cursors/cursor_point_over.png), default')"
+                    onclick="client.onButBackToMain()"><script>document.write(Lang.gettext("Play again"));</script></button>
+        </div>
+
+        <div id="game_info">
+            <div id="game_pick_info">
+                <h2><script>document.write(Lang.gettext("Welcome !"));</script></h2>
+                <div style="padding-left: 10px">
+                    <p><script>document.write(Lang.gettext("Please choose your name 'Play' to join a game."));</script></p>
+                    <p><script>document.write(Lang.gettext("There are two sides: hiders and seekers."));</script></p>
+                    <p><script>document.write(Lang.gettext("Hiders gain points by collecting gold bags. They loose points if caught by a seeker."));</script></p>
+                    <p><script>document.write(Lang.gettext("Seekers gain points by catching hiders."));</script></p>
+                    <table>
+                        <tr>
+                            <td><img id="img_controls" height="32" width="98" style="padding-right: 10px;" src="./res/icons/icon_controls.png"></td>
+                            <td><script>document.write(Lang.gettext("move"));</script></td>
+                        </tr>
+                        <tr>
+                            <td><b><script>document.write(Lang.gettext("SPACE"));</script></b></td>
+                            <td><script>document.write(Lang.gettext("run / plant trap"));</script></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div id="game_lobby_info" style="display: none">
+                <h2><script>document.write(Lang.gettext("Game lobby"));</script></h2>
+                <p><script>document.write(Lang.gettext("Change teams by clicking on the team name."));</script></p>
+                <p><script>document.write(Lang.gettext("Press 'Ready' when you are ready."));</script></p>
+                <p><script>document.write(Lang.gettext("The game will automatically start when all connected players are ready."));</script></p>
+                <p><script>document.write(Lang.gettext("At least a hider and a seeker are required for the game to start!"));</script></p>
+            </div>
+
+            <div id="game_board_info" style="display: none">
+                <p><text class="game_info" id="text_playerName"></text></p>
+                <p id="p_playerInfo1">
+                    <img class="game_info" id="img_gameTimer" src="./res/icons/icon_hourglass.gif"/>
+                    <text class="game_info_big" id="text_gameRemainingTime"></text>
+                    <img class="game_info" id="img_playerScore" src="./res/icons/icon_alpha.png"/>
+                    <text class="game_info_big" id="text_playerScore">00</text>
+                </p>
+                <p id="p_playerInfo2">
+                    <img class="game_info" id="img_playerSpeed" src="./res/icons/icon_speed_normal.png">
+                    <text class="game_info" id="text_playerSpeed">100</text>
+                    <img class="game_info" id="img_playerSpecial1" src="./res/icons/icon_alpha.png">
+                    <text class="game_info" id="text_playerSpecial1">40</text>
+                </p>
+                <p id="p_playerInfo3">
+                    <img class="game_info" id="img_playerSpeedSlow" src="./res/icons/icon_alpha.png">
+                    <text class="game_info" id="text_playerSpeedSlowTimer">00</text>
+                    <img class="game_info" id="img_playerSpeedBoost" src="./res/icons/icon_alpha.png">
+                    <text class="game_info" id="text_playerSpeedBoostTimer">00</text>
+                </p>
+                <p id="p_playerInfo31">
+                    <img class="game_info" id="img_playerJail" src="./res/icons/icon_alpha.png">
+                    <text class="game_info" id="text_playerJailTimer">00</text>
+                </p>
+                <p><text class="game_info"><script>document.write(Lang.gettext("Game "));</script></text></p>
+                <p id="p_gameInfo1">
+                    <img class="game_info" id="img_gameRunners" src="./res/icons/icon_hider.png">
+                    <text class="game_info" id="text_gameRunners">0</text>
+                    <img class="game_info" id="img_gameChasers" src="./res/icons/icon_seeker.png"/>
+                    <text class="game_info" id="text_gameChasers">0</text>
+                </p>
+                <p id="p_gameInfo2">
+                    <img class="game_info" id="img_gameGold" src="./res/icons/icon_gold.png"/>
+                    <text class="game_info" id="text_gameGold">0</text>
+                    <img class="game_info" id="img_gameJail" src="./res/icons/icon_prison.png">
+                    <text class="game_info" id="text_gameJail">0</text>
+                </p>
+
+            </div>
+
+            <div id="game_debug_info" style="display: none">
+                <h2><script>document.write(Lang.gettext("Debug information"));</script></h2>
+                <ul>
+                    <p><script>document.write(Lang.gettext("Number of players: "));</script><text id="noPlayers"/></p>
+                    <p><script>document.write(Lang.gettext("Ms per frame: "));</script><text id="msPerFrame"/></p>
+                    <p><script>document.write(Lang.gettext("Ms physical upd: "));</script><text id="msPhysicalUpdate"/></p>
+                    <p><script>document.write(Lang.gettext("Movement delta: "));</script><text id="movDelta"/></p>
+                    <p><script>document.write(Lang.gettext("Server ping: "));</script><text id="srvPing"/></p>
+                    <p><script>document.write(Lang.gettext("Tmp debug: "));</script><text id="tmp"/></p>
+                </ul>
+            </div>
+        </div>
+
+        <div id="game_chat" style="display: none">
+            <p style="text-align: left;padding-left: 10px;" >
+                <textarea id="textarea_Chat" class="lobbyChat" rows="5" readonly="readonly" disabled="disabled"></textarea>
+                <br/>
+                <select id="combobox_ChatMode">
+                    <option value="all"><script>document.write(Lang.gettext("All"));</script></option>
+                    <option value="team"><script>document.write(Lang.gettext("Team"));</script></option>
+                </select>
+                <input id="input_Chat" style="width: 75%" maxlength="100" onkeypress="client.onSendLobbyChat(event.which)"/>
+                <button id="but_SendChat" onclick="client.onSendLobbyChat(13)"><script>document.write(Lang.gettext("Send"));</script></button>
+            </p>
+        </div>
+    </div>
+
+    <p id="logOnceMessages"/>
+    <p id="logMessages"/>
+
+    <!--div id="footer">
+        <div id="footercontent">
+            <hr/>
+            <a href="">About</a>
+            <span class="separator">|</span>
+            <a href="">Contact</a>
+            <div style="float: right;">
+                <a href="" target="_blank">Hide & Seek</a>
+            </div>
+        </div>
+    </div-->
+</body>
+
+</html>
